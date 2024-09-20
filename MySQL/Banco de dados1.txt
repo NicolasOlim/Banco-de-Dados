@@ -1,0 +1,6 @@
+CREATE DATABASE empresa
+USE empresa
+
+CREATE TABLE empregado ( id_empregado INT PRIMARY KEY NOT NULL AUTO_INCREMENT, cpf VARCHAR(14) NOT NULL UNIQUE, nome VARCHAR(80) NOT NULL, email VARCHAR(60) NOT NULL, telefone VARCHAR(16) );
+
+CREATE TABLE dependente ( id_dependente INT PRIMARY KEY NOT NULL AUTO_INCREMENT, cpf VARCHAR(14) NOT NULL UNIQUE, nome VARCHAR(80) NOT NULL, contato VARCHAR(16), id_empregado INT NOT NULL, FOREIGN KEY (id_empregado) REFERENCES empregado(id_empregado) );

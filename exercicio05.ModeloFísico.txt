@@ -1,0 +1,94 @@
+-- Schema mydb
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
+USE `mydb` ;
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Cidade`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Cidade` (
+  `Id_Cidade` INT NOT NULL AUTO_INCREMENT,
+  `Nome` VARCHAR(20) NOT NULL,
+  `População` INT NOT NULL,
+  PRIMARY KEY (`Id_Cidade`),
+  UNIQUE INDEX `idCidade_UNIQUE` (`Id_Cidade` ASC) VISIBLE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Exposição`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Exposição` (
+  `Id_Exposição` INT NOT NULL AUTO_INCREMENT,
+  `Data` DATE NOT NULL,
+  `Endereço` VARCHAR(60) NOT NULL,
+  `Cidade_Id_Cidade` INT NOT NULL,
+  PRIMARY KEY (`Id_Exposição`),
+  UNIQUE INDEX `idExposição_UNIQUE` (`Id_Exposição` ASC) VISIBLE,
+  INDEX `fk_Exposição_Cidade_idx` (`Cidade_Id_Cidade` ASC) VISIBLE,
+  CONSTRAINT `fk_Exposição_Cidade`
+    FOREIGN KEY (`Cidade_Id_Cidade`)
+    REFERENCES `mydb`.`Cidade` (`Id_Cidade`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Artista`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Artista` (
+  `CPF` VARCHAR(20) NOT NULL,
+  `Idade` INT NOT NULL,
+  `Nome` VARCHAR(20) NOT NULL,
+  `Salario` FLOAT NOT NULL,
+  `Nacionalidade` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`CPF`),
+  UNIQUE INDEX `CPF_UNIQUE` (`CPF` ASC) VISIBLE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Obra`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Obra` (
+  `Id_Obra` INT NOT NULL AUTO_INCREMENT,
+  `Valor` FLOAT NOT NULL,
+  `Tipo` VARCHAR(20) NOT NULL,
+  `Tela` VARCHAR(20) NULL,
+  `Tinta` VARCHAR(20) NULL,
+  `Materiais` VARCHAR(20) NULL,
+  `Tamanho` FLOAT NULL,
+  `Peso` FLOAT NULL,
+  `Artista_CPF` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`Id_Obra`),
+  UNIQUE INDEX `idObra_UNIQUE` (`Id_Obra` ASC) VISIBLE,
+  INDEX `fk_Obra_Artista1_idx` (`Artista_CPF` ASC) VISIBLE,
+  CONSTRAINT `fk_Obra_Artista1`
+    FOREIGN KEY (`Artista_CPF`)
+    REFERENCES `mydb`.`Artista` (`CPF`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Artista_has_Exposição1`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Artista_has_Exposição1` (
+  `Artista_CPF` VARCHAR(20) NOT NULL,
+  `Exposição_Id_Exposição` INT NOT NULL,
+  PRIMARY KEY (`Artista_CPF`, `Exposição_Id_Exposição`),
+  INDEX `fk_Artista_has_Exposição1_Exposição1_idx` (`Exposição_Id_Exposição` ASC) VISIBLE,
+  INDEX `fk_Artista_has_Exposição1_Artista1_idx` (`Artista_CPF` ASC) VISIBLE,
+  CONSTRAINT `fk_Artista_has_Exposição1_Artista1`
+    FOREIGN KEY (`Artista_CPF`)
+    REFERENCES `mydb`.`Artista` (`CPF`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Artista_has_Exposição1_Exposição1`
+    FOREIGN KEY (`Exposição_Id_Exposição`)
+    REFERENCES `mydb`.`Exposição` (`Id_Exposição`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;

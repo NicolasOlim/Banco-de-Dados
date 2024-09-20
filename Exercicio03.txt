@@ -1,0 +1,40 @@
+-- Schema mydb
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `ensino` DEFAULT CHARACTER SET utf8 ;
+USE `ensino` ;
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Escola`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ensino`.`Escola` (
+  `id_Escola` INT NOT NULL AUTO_INCREMENT,
+  `Nome` VARCHAR(40) NOT NULL,
+  `Endereço` VARCHAR(40) NOT NULL,
+  `Email` VARCHAR(40) NOT NULL,
+  `Telefone` VARCHAR(40) NOT NULL,
+  PRIMARY KEY (`id_Escola`),
+  UNIQUE INDEX `idEscola_UNIQUE` (`id_Escola` ASC))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Professor`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ensino`.`Professor` (
+  `Masp` INT NOT NULL AUTO_INCREMENT,
+  `CPF` VARCHAR(20) NOT NULL,
+  `Nome` VARCHAR(40) NOT NULL,
+  `Email` VARCHAR(40) NOT NULL,
+  `Telefone` VARCHAR(20) NOT NULL,
+  `Disciplina` VARCHAR(30) NOT NULL,
+  `id_Escola_Prof` INT NOT NULL,
+  PRIMARY KEY (`Masp`, `CPF`),
+  UNIQUE INDEX `idProfessor_UNIQUE` (`Masp` ASC),
+  UNIQUE INDEX `CPF_UNIQUE` (`CPF` ASC),
+  INDEX `fk_Professor_Escola_idx` (`id_Escola_Prof` ASC),
+  CONSTRAINT `fk_Professor_Escola`
+    FOREIGN KEY (`id_Escola_Prof`)
+    REFERENCES `ensino`.`Escola` (`id_Escola`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
